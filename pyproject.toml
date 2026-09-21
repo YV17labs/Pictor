@@ -3,6 +3,9 @@ name = "pictor"
 version = "0.3.0"
 description = "OpenAI-compatible gateway for local image models: chat + images API with streamed progress, on top of diffusers (Metal on Mac, CUDA elsewhere). Ships Qwen-Image-2.1."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Yoann Vanitou" }]
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "fastapi>=0.115",
