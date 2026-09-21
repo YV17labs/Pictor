@@ -1,0 +1,56 @@
+[project]
+name = "pictor"
+version = "0.3.0"
+description = "OpenAI-compatible gateway for local image models: chat + images API with streamed progress, on top of diffusers (Metal on Mac, CUDA elsewhere). Ships Qwen-Image-2.1."
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "httpx>=0.27",
+    "pillow>=10.0",
+    "python-multipart>=0.0.9",
+    "numpy>=1.26",
+    # Qwen's native pipeline. diffusers is pinned to a git commit until the release that
+    # ships QwenImage21Pipeline (merged upstream 2026-09-18) is on PyPI.
+    "torch>=2.4",
+    "torchvision>=0.19",
+    "diffusers @ git+https://github.com/huggingface/diffusers.git@80c7ed262aeffbeb43ef13ae04baeb9b84515a69",
+    "transformers>=5.17",
+    "accelerate>=1.0",
+    "sentencepiece",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+pictor = "pictor.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pictor"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]  # FastAPI Form()/File() defaults are the documented idiom
